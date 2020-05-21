@@ -12,6 +12,10 @@ Button::Button(int butPin)
 	lastButtonState = LOW;
 }
 
+Button::Button() {
+
+}
+
 int Button::debounce()
 {
 	int result = LOW;	// value to be returned after executing the function
@@ -32,6 +36,7 @@ int Button::debounce()
 
 	if ((millis() - lastDebounceTime) > debounceDelay)
 	{
+
 		// whatever the reading is at, it's been there for longer than
 		// the debounce delay, so take it as the actual current state:
 

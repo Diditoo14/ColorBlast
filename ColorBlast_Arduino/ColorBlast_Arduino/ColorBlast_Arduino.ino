@@ -8,30 +8,37 @@
 #include "Levels.h"
 #include "Button.h"
 
+//declare LEDs
 const int redLedPin = 6;
 const int yellowLedPin = 8;
 const int greenLedPin = 13;
 
+//declare buttons
 const int btnPinTop = 2;
 const int btnPinMiddle = 3;
 const int btnPinButtom = 4;
 
+//stores current level (0,1,2)
 //Keep default at -1;
-int currentLevel = -1;
+int currentLevel = 2;
+
+//indicates if the correct combination is showing at the moment
 bool ledBlinking = false;
 
+//indicates if the system is taking the user input
+bool inputReading = false;
+
+//debounce objects for the buttons
 Button* btnTop = new Button(2);
 Button* btnMiddle = new Button(3);
-Button* btnButtom = new Button(4);
+Button* btnBottom = new Button(4);
 
+//declare the predefined levels
 Levels* arrayOfLevels[3] = { 
     new Levels(new int[5]{ 1,2,3,2,1 }, 5, 500),
     new Levels(new int[7]{ 1,2,3,2,1,2,1 }, 7, 300),
-    new Levels(new int[11]{ 1,2,3,2,1,3,1,1 }, 11, 300),
+    new Levels(new int[8]{ 1,2,3,2,1,3,1,1 }, 8, 300),
 };
-
-
-
 
 
 
@@ -39,6 +46,9 @@ void setup() {
     pinMode(redLedPin, OUTPUT);
     pinMode(yellowLedPin, OUTPUT);
     pinMode(greenLedPin, OUTPUT);
+    pinMode(5, OUTPUT);
+    pinMode(12, OUTPUT);
+
     pinMode(btnPinTop, INPUT_PULLUP);
     pinMode(btnPinMiddle, INPUT_PULLUP);
     pinMode(btnPinButtom, INPUT_PULLUP);
@@ -49,12 +59,14 @@ void setup() {
 // the loop function runs over and over again until power down or reset
 void loop() {
    
+    //GetLevel();
+    StartOfGame();
+    ReadButtonInput();
 
-    //StartOfGame();
-    
 }
 
-String GetLevel()
+//reads serial which level is selected from the user
+void GetLevel()
 {
     if (Serial.available())
     {
@@ -85,16 +97,44 @@ String GetLevel()
     }
 }
 
+
+//shows the blinking combination
 void StartOfGame()
 {
     if (currentLevel != -1)
     {
-        if (btnTop->debounce() && ledBlinking == false)
+        //btnTop->debounce() && 
+        if (ledBlinking == false && inputReading == false)
         {
             ledBlinking = true;
             arrayOfLevels[currentLevel]->StartBlinking();
             ledBlinking = false;
+
+            inputReading = true;
         }
     }
 }
 
+// 
+void ReadButtonInput()
+{
+    if (inputReading)
+    {
+        //red LED
+        if (btnTop->debounce())
+        {
+            arrayOfLevels[currentLevel]->GetInput(1);
+        }
+        //yellow LED
+        if (btnMiddle->debounce())
+        {
+            arrayOfLevels[currentLevel]->GetInput(2);
+        }
+        //green LED
+        if (btnBottom->debounce())
+        {
+            arrayOfLevels[currentLevel]->GetInput(3);
+        }
+    }
+    
+}

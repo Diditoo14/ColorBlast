@@ -20,6 +20,8 @@ private:
 public:
 	//constructor
 	Button(int butPin);
+	//Default constructor na maikat i
+	Button();
 	//method for debouncing a button
 	int debounce();
 
