@@ -20,8 +20,7 @@ const int btnPinButtom = 4;
 
 //stores current level (0,1,2)
 //Keep default at -1;
-int currentLevel = 2;
-
+int currentLevel = 3;
 //indicates if the correct combination is showing at the moment
 bool ledBlinking = false;
 
@@ -34,10 +33,11 @@ Button* btnMiddle = new Button(3);
 Button* btnBottom = new Button(4);
 
 //declare the predefined levels
-Levels* arrayOfLevels[3] = { 
+Levels* arrayOfLevels[4] = { 
     new Levels(new int[5]{ 1,2,3,2,1 }, 5, 500),
     new Levels(new int[7]{ 1,2,3,2,1,2,1 }, 7, 300),
     new Levels(new int[8]{ 1,2,3,2,1,3,1,1 }, 8, 300),
+    new Levels(new int[11]{ 3,1,3,2,2,3,1,2,3,1,1 }, 11, 300),
 };
 
 
@@ -103,9 +103,10 @@ void StartOfGame()
 {
     if (currentLevel != -1)
     {
-        //btnTop->debounce() && 
+        //btnTop->debounce() &&  ?????
         if (ledBlinking == false && inputReading == false)
         {
+            if (!btnTop->debounce()) return;
             ledBlinking = true;
             arrayOfLevels[currentLevel]->StartBlinking();
             ledBlinking = false;
