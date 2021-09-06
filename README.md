@@ -1,2 +1,2 @@
 # ColorBlast
- 
+I have chosen to make a game called ‘Color blast’ in an Arduino program that is connected to Windows Forms App. Three LEDs will be turning on and off in different order on an Arduino shield and the user is supposed to copy the right order of the LEDs using three push buttons. There are three levels of difficulties, so the user can choose one before the game starts. At the end, depending if the player has guessed correctly, the RGB on the shield will be turned on in the specific colour, green or red, and a message showing the game result will pop up in the Windows Forms App.
